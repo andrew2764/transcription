@@ -16,14 +16,9 @@ function App() {
     setConvertedLyrics(jyutpingList);
   };
   const onConvertPinyin = () => {
-    const pinyinListRaw = pinyin(lyrics)
-      .flatMap(([py]) => py.replace("\n", ""))
-      .map((py) => (py === "" ? "\n" : py));
-    const pinyinList = pinyinListRaw.map((py, i) => {
-      const char = lyrics[i];
-      const pinyin = char in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] ? py : py;
-      return [lyrics[i], pinyin];
-    });
+    const pinyinList = lyrics.split('').map((han) => {
+      return [han, pinyin(han)[0][0]]
+    })
     setConvertedLyrics(pinyinList);
   };
 

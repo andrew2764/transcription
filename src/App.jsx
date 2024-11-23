@@ -4,7 +4,8 @@ import ToJyutping from "to-jyutping";
 import pinyin from "pinyin";
 
 function App() {
-  const initialConvertedLyrics = ToJyutping.getJyutpingList("我是一隻小小鳥");
+  const initialLyrics = "我是一隻小小鳥";
+  const initialConvertedLyrics = ToJyutping.getJyutpingList(initialLyrics);
   const [convertedLyrics, setConvertedLyrics] = useState(
     initialConvertedLyrics,
   );
@@ -33,6 +34,7 @@ function App() {
       <textarea
         ref={lyricsInputRef}
         id="lyrics-input"
+        value={initialLyrics}
         rows="10"
       ></textarea>
       <section>

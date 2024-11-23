@@ -1,30 +1,28 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import "./App.css";
 import ToJyutping from "to-jyutping";
 import pinyin from "pinyin";
 
 function App() {
   const initialLyrics = "我是一隻小小鳥";
+  const [lyrics, setLyrics] = useState(initialLyrics);
   const initialConvertedLyrics = ToJyutping.getJyutpingList(initialLyrics);
   const [convertedLyrics, setConvertedLyrics] = useState(
     initialConvertedLyrics,
   );
-  const lyricsInputRef = useRef();
 
   const onConvertJyutping = () => {
-    const jyutpingList = ToJyutping.getJyutpingList(
-      lyricsInputRef.current.value,
-    );
+    const jyutpingList = ToJyutping.getJyutpingList(lyrics);
     setConvertedLyrics(jyutpingList);
   };
   const onConvertPinyin = () => {
-    const pinyinListRaw = pinyin(lyricsInputRef.current.value)
+    const pinyinListRaw = pinyin(lyrics)
       .flatMap(([py]) => py.replace("\n", ""))
       .map((py) => (py === "" ? "\n" : py));
     const pinyinList = pinyinListRaw.map((py, i) => {
-      const char = lyricsInputRef.current.value[i];
+      const char = lyrics[i];
       const pinyin = char in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] ? py : py;
-      return [lyricsInputRef.current.value[i], pinyin];
+      return [lyrics[i], pinyin];
     });
     setConvertedLyrics(pinyinList);
   };
@@ -32,9 +30,9 @@ function App() {
   return (
     <div className="container">
       <textarea
-        ref={lyricsInputRef}
         id="lyrics-input"
-        value={initialLyrics}
+        value={lyrics}
+        onChange={(e) => setLyrics(e.target.value)}
         rows="10"
       ></textarea>
       <section>

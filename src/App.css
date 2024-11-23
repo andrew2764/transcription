@@ -1,0 +1,32 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.character {
+  display: inline-block;
+  margin-right: 6px;
+}
+
+.jp {
+  font-size: 0.75rem;
+}
+
+.char {
+  font-size: 1rem;
+}
+
+.button-group {
+  margin-top: 16px;
+}
+.button-group button {
+ width: 7rem;
+ margin-right: 8px;
+}
+
+#lyrics-input {
+  resize: none;
+  width: 80%;
+}

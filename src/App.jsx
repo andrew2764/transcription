@@ -4,7 +4,7 @@ import ToJyutping from "to-jyutping";
 import pinyin from "pinyin";
 
 function App() {
-  const initialLyrics = "我是一隻小小鳥";
+  const initialLyrics = "吾能助君註粵漢音，譯華為英";
   const [lyrics, setLyrics] = useState(initialLyrics);
   const initialConvertedLyrics = ToJyutping.getJyutpingList(initialLyrics);
   const [convertedLyrics, setConvertedLyrics] = useState(
@@ -23,31 +23,34 @@ function App() {
   };
 
   return (
-    <div className="container">
-      <textarea
-        id="lyrics-input"
-        value={lyrics}
-        onChange={(e) => setLyrics(e.target.value)}
-        rows="10"
-      ></textarea>
-      <section>
-        {convertedLyrics.map(([char, jp], i) => {
-          if (char === "\n") return <br key={i} />;
+    <>
+      <h1>Phonetic Planet</h1>
+      <div className="container">
+        <textarea
+          id="lyrics-input"
+          value={lyrics}
+          onChange={(e) => setLyrics(e.target.value)}
+          rows="10"
+        ></textarea>
+        <section>
+          {convertedLyrics.map(([char, jp], i) => {
+            if (char === "\n") return <br key={i} />;
 
-          return (
-            <span key={i} className="character">
-              <div className="jp">{jp}</div>
-              <div className="char">{char}</div>
-            </span>
-          );
-        })}
-      </section>
+            return (
+              <span key={i} className="character">
+                <div className="jp">{jp}</div>
+                <div className="char">{char}</div>
+              </span>
+            );
+          })}
+        </section>
 
-      <div className="button-group">
-        <button onClick={onConvertJyutping}>Jyutping</button>
-        <button onClick={onConvertPinyin}>Pinyin</button>
+        <div className="button-group">
+          <button onClick={onConvertJyutping}>Jyutping</button>
+          <button onClick={onConvertPinyin}>Pinyin</button>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

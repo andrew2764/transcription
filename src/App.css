@@ -1,10 +1,12 @@
 .character {
   display: inline-block;
-  margin-right: 6px;
+  margin-right: 4px;
 }
 
 .jp {
-  font-size: 0.75rem;
+  font-size: 0.8rem;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 300;
 }
 
 .char {
@@ -26,7 +28,7 @@
 }
 
 .container {
-  width: 80%;
+  width: 90%;
   margin: 0 auto;
   max-width: 1000px;
 }

@@ -16,9 +16,9 @@ function App() {
     setConvertedLyrics(jyutpingList);
   };
   const onConvertPinyin = () => {
-    const pinyinList = lyrics.split('').map((han) => {
-      return [han, pinyin(han)[0][0]]
-    })
+    const pinyinList = lyrics.split("").map((han) => {
+      return [han, pinyin(han)[0][0]];
+    });
     setConvertedLyrics(pinyinList);
   };
 
@@ -48,6 +48,14 @@ function App() {
         <div className="button-group">
           <button onClick={onConvertJyutping}>Jyutping</button>
           <button onClick={onConvertPinyin}>Pinyin</button>
+          <button
+            onClick={() => {
+              setLyrics("");
+              setConvertedLyrics("");
+            }}
+          >
+            Clear
+          </button>
         </div>
       </div>
     </>

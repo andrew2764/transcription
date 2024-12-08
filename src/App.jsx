@@ -32,6 +32,20 @@ function App() {
           onChange={(e) => setLyrics(e.target.value)}
           rows="10"
         ></textarea>
+
+        <div className="button-group">
+          <button onClick={onConvertJyutping}>Jyutping</button>
+          <button onClick={onConvertPinyin}>Pinyin</button>
+          <button
+            onClick={() => {
+              setLyrics("");
+              setConvertedLyrics([]);
+            }}
+          >
+            Clear
+          </button>
+        </div>
+
         <section>
           {convertedLyrics.map(([char, jp], i) => {
             if (char === "\n") return <br key={i} />;
@@ -44,19 +58,6 @@ function App() {
             );
           })}
         </section>
-
-        <div className="button-group">
-          <button onClick={onConvertJyutping}>Jyutping</button>
-          <button onClick={onConvertPinyin}>Pinyin</button>
-          <button
-            onClick={() => {
-              setLyrics("");
-              setConvertedLyrics("");
-            }}
-          >
-            Clear
-          </button>
-        </div>
       </div>
     </>
   );

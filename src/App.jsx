@@ -3,6 +3,8 @@ import "./App.css";
 import ToJyutping from "to-jyutping";
 import pinyin from "pinyin";
 
+const MAX_CHAR_LENGTH = 1500;
+
 function App() {
   const initialLyrics = "吾能助君註粵漢音，譯華為英";
   const [lyrics, setLyrics] = useState(initialLyrics);
@@ -12,10 +14,16 @@ function App() {
   );
 
   const onConvertJyutping = () => {
+    if (lyrics.length > MAX_CHAR_LENGTH) {
+      return
+    }
     const jyutpingList = ToJyutping.getJyutpingList(lyrics);
     setConvertedLyrics(jyutpingList);
   };
   const onConvertPinyin = () => {
+    if (lyrics.length > MAX_CHAR_LENGTH) {
+      return
+    }
     const pinyinList = lyrics.split("").map((han) => {
       return [han, pinyin(han)[0][0]];
     });

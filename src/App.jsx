@@ -95,7 +95,7 @@ function App() {
           </button>
         </div>
 
-        <section>
+        <section className="lyric-display">
           {convertedLyrics.map((line, i) => {
             if (line.length === 0) return <br key={i} />;
             return (

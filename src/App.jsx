@@ -8,12 +8,27 @@ const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
 
 function App() {
   const initialLyrics = "吾能助君註粵漢音，譯華為英";
+  const normalizeConvertedLyrics = (convertedLyricList) => {
+    const result = [];
+    let currentGroup = [];
+    convertedLyricList.forEach((item) => {
+      if (item[0] === "\n") {
+        result.push(currentGroup);
+        currentGroup = [];
+      } else {
+        currentGroup.push(item);
+      }
+    });
+    result.push(currentGroup);
+    return result;
+  };
+  
   const [lyrics, setLyrics] = useState(initialLyrics);
-  const initialConvertedLyrics = ToJyutping.getJyutpingList(initialLyrics);
+  const initialConvertedLyrics = normalizeConvertedLyrics(ToJyutping.getJyutpingList(initialLyrics));
   const [convertedLyrics, setConvertedLyrics] = useState(
     initialConvertedLyrics,
   );
-  const [translatedLyrics, setTranslatedLyrics] = useState([]);
+  const [translatedLyrics, setTranslatedLyrics] = useState(['I can help you annotate Cantonese and Chinese pronunciations and translate Chinese into English.']);
   const fetchTranslation = async (_text) => {
     const splitText = _text.split("\n");
     const translatedText = await Promise.all(
@@ -30,20 +45,7 @@ function App() {
     setTranslatedLyrics(translatedText);
   };
 
-  const normalizeConvertedLyrics = (convertedLyricList) => {
-    const result = [];
-    let currentGroup = [];
-    convertedLyricList.forEach((item) => {
-      if (item[0] === "\n") {
-        result.push(currentGroup);
-        currentGroup = [];
-      } else {
-        currentGroup.push(item);
-      }
-    });
-    result.push(currentGroup);
-    return result;
-  };
+
   const onConvertJyutping = () => {
     if (lyrics.length > MAX_CHAR_LENGTH) {
       return;

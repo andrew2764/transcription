@@ -4,6 +4,7 @@ import ToJyutping from "to-jyutping";
 import pinyin from "pinyin";
 
 const MAX_CHAR_LENGTH = 1500;
+const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
 
 function App() {
   const initialLyrics = "吾能助君註粵漢音，譯華為英";
@@ -12,22 +13,58 @@ function App() {
   const [convertedLyrics, setConvertedLyrics] = useState(
     initialConvertedLyrics,
   );
+  const [translatedLyrics, setTranslatedLyrics] = useState([]);
+  const fetchTranslation = async (_text) => {
+    const splitText = _text.split("\n");
+    const translatedText = await Promise.all(
+      splitText.map(async (line) => {
+        const response = await fetch(
+          `https://translation.googleapis.com/language/translate/v2?key=${GOOGLE_API_KEY}&source=zh&target=en&q=${encodeURIComponent(
+            line,
+          )}&format=text`,
+        );
+        const data = await response.json();
+        return data.data.translations[0].translatedText;
+      }),
+    );
+    setTranslatedLyrics(translatedText);
+  };
 
+  const normalizeConvertedLyrics = (convertedLyricList) => {
+    const result = [];
+    let currentGroup = [];
+    convertedLyricList.forEach((item) => {
+      if (item[0] === "\n") {
+        result.push(currentGroup);
+        currentGroup = [];
+      } else {
+        currentGroup.push(item);
+      }
+    });
+    result.push(currentGroup);
+    return result;
+  };
   const onConvertJyutping = () => {
     if (lyrics.length > MAX_CHAR_LENGTH) {
-      return
+      return;
     }
     const jyutpingList = ToJyutping.getJyutpingList(lyrics);
-    setConvertedLyrics(jyutpingList);
+    const nextConvertedLyrics = normalizeConvertedLyrics(jyutpingList);
+
+    setConvertedLyrics(nextConvertedLyrics);
+    fetchTranslation(lyrics);
   };
   const onConvertPinyin = () => {
     if (lyrics.length > MAX_CHAR_LENGTH) {
-      return
+      return;
     }
     const pinyinList = lyrics.split("").map((han) => {
       return [han, pinyin(han)[0][0]];
     });
-    setConvertedLyrics(pinyinList);
+
+    const nextConvertedLyrics = normalizeConvertedLyrics(pinyinList);
+    setConvertedLyrics(nextConvertedLyrics);
+    fetchTranslation(lyrics);
   };
 
   return (
@@ -57,14 +94,20 @@ function App() {
         </div>
 
         <section>
-          {convertedLyrics.map(([char, jp], i) => {
-            if (char === "\n") return <br key={i} />;
-
+          {convertedLyrics.map((line, i) => {
+            if (line.length === 0) return <br key={i} />;
             return (
-              <span key={i} className="character">
-                <div className="jp">{jp}</div>
-                <div className="char">{char}</div>
-              </span>
+              <div key={i}>
+                {line.map(([char, jp], j) => {
+                  return (
+                    <span key={j} className="character">
+                      <div className="jp">{jp}</div>
+                      <div className="char">{char}</div>
+                    </span>
+                  );
+                })}
+                <div>{translatedLyrics[i]}</div>
+              </div>
             );
           })}
         </section>

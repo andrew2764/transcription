@@ -32,7 +32,9 @@ function App() {
 
   return (
     <>
-      <h1>Phonetic Planet</h1>
+      <h1>
+        ݁݁<span className="cross">ᛪ༙</span> ִֶָ☾.Phonetic Planet✮⋆˙
+      </h1>
       <div className="container">
         <textarea
           id="lyrics-input"
